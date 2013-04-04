@@ -16,9 +16,12 @@ endif
 
 ERLWARE_COMMONS_PLT=$(CURDIR)/.erlware_commons_plt
 
-.PHONY: all compile doc clean test shell distclean pdf get-deps rebuild #dialyzer typer #fail on Travis.
+.PHONY: all compile escript doc clean test shell distclean pdf get-deps rebuild #dialyzer typer #fail on Travis.
 
-all: compile doc test #dialyzer #fail on travis
+all: compile escript doc test #dialyzer #fail on travis
+
+escript: compile
+	$(REBAR) escriptize
 
 $(REBAR):
 	wget https://github.com/rebar/rebar/wiki/rebar

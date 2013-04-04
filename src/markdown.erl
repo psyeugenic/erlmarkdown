@@ -11,7 +11,8 @@
 
 -export([conv/1,
          conv_utf8/1,
-         conv_file/2]).
+         conv_file/2,
+         main/1]).
 
 -import(lists, [flatten/1, reverse/1]).
 
@@ -84,6 +85,24 @@ write(File, Text) ->
             error
     end.
 
+
+main(Args) ->
+    main(Args, undefined, undefined).
+
+main(["-o", File|Args], In, _) ->
+    main(Args, In, File);
+main([File|Args], _, Out) ->
+    main(Args, File, Out);
+main([], undefined, _) ->
+   io:put_chars(standard_error, [
+	   "Error: no input file specified.\n"
+       ]);
+main([], _, undefined) ->
+   io:put_chars(standard_error, [
+	   "Error: no output file specified.\n"
+       ]);
+main([], In, Out) ->
+    conv_file(In, Out).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%
